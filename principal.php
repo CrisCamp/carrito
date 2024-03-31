@@ -29,8 +29,8 @@
 			<nav>
 				<ul>
 					<li><a href="#">Inicio</a></li>
-					<li><a href="#">Acerca de</a></li>					
-					<li><a href="#">Acerca de</a></li>
+					<li><a href="pedidos.php">Mis pedidos</a></li>					
+					<li><a href="acerca.php">Acerca de</a></li>
 					<li><a href="cerrar.php">Cerrar sesion</a></li>
 				</ul>
         	</nav>
@@ -42,8 +42,7 @@
 						viewBox="0 0 24 24"
 						stroke-width="1.5"
 						stroke="currentColor"
-						class="icon-cart"
-					>
+						class="icon-cart" > <!--Clase de la imagen -->
 						<path
 							stroke-linecap="round"
 							stroke-linejoin="round"
@@ -54,23 +53,16 @@
 						<span id="contador-productos">0</span>
 					</div>
 				</div>
-
 				<div class="container-cart-products hidden-cart">
 					<div class="row-product hidden">
 						<div class="cart-product">
-							<div class="info-cart-product">
-								<span class="cantidad-producto-carrito">1</span>
-								<p class="titulo-producto-carrito">Zapatos Nike</p>
-								<span class="precio-producto-carrito">$80</span>
-							</div>
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
 								fill="none"
 								viewBox="0 0 24 24"
 								stroke-width="1.5"
 								stroke="currentColor"
-								class="icon-close"
-							>
+								class="icon-close"><!--Clase de la imagen -->
 								<path
 									stroke-linecap="round"
 									stroke-linejoin="round"
@@ -82,9 +74,11 @@
 
 					<div class="cart-total hidden">
 						<h3>Total:</h3>
-						<span class="total-pagar">$200</span>
+						<span class="total-pagar">$</span>
 					</div>
 					<p class="cart-empty">El carrito está vacío</p>
+					<!-- Botón de pago -->
+    				<a class="btn-pagar">Hacer el pedido</a>
 				</div>
 			</div>
 		</header>
@@ -92,7 +86,7 @@
 			<?php foreach ($lista_productos as $registro) { ?>
 				<div class="item">
 					<figure>
-						<img src="img/<?php echo $registro["imagen"] ?>" alt="producto" />
+						<img src="<?php echo $registro["imagen"] ?>" alt="producto" />
 					</figure>
 					<div class="info-product">
 						<h2><?php echo $registro["nombre"] ?></h2>

@@ -1,43 +1,14 @@
-<?php 
+<?php
     session_start();
+
     if(isset($_SESSION['usuario']) && $_SESSION['tipo'] == 0){
         header("Location:./principal.php");
     }else if(isset($_SESSION['usuario']) && $_SESSION['tipo'] == 1){
         header("Location:./admin/index.php");
     }
-    if($_POST){
-        include("bd/bd.php"); // archivo de conexion
-        $usuario = (isset($_POST['usuario']))?$_POST['usuario']:"";
-        $password = (isset($_POST['password']))?$_POST['password']:"";
-        $sentencia=$conexion->prepare("SELECT *, count(*) as n_usuario 
-        FROM tbl_usuarios WHERE usuario = :usuario AND password = :password");
-        //donde encuentres usuario pon la varible $usuario en la sentencia de arriba
-        $sentencia->bindParam(":usuario",$usuario);
-        //donde encuentres password pon la varible $password en la sentencia de arriba
-        $sentencia->bindParam(":password",$password);
-        //Ejecutar
-        $sentencia->execute();
-        $lista_usuarios=$sentencia->fetch(PDO::FETCH_LAZY);
-        if($lista_usuarios['n_usuario']>0){
-            // print_r("el usuario y contraseña existe");
-            if($lista_usuarios['tipo'] == 0){
-                header("Location:./principal.php");
-            }else if($lista_usuarios['tipo'] == 1){
-                header("Location:./admin/index.php");
-            }else{
-                $mensaje = "Error: El usuario no puede existir";
-            }
-            // Declaracion de variables de session
-            $_SESSION['usuario'] = $lista_usuarios['usuario'];
-            $_SESSION['tipo'] = $lista_usuarios['tipo'];
-            $_SESSION['logueado'] = true;            
-        }else{
-            $mensaje = "Error: El usuario o la contraseña No existe";
-        }
-    }
 ?>
 
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -76,8 +47,8 @@
                             Iniciar Sesión
                         </div>
                         <div class="card-body">
-                            <form id="login" action="index.php" method="post">
-                                <!-- Campos de inicio de sesión -->
+    <!-- ***************************************Formulario Inicio de sesion************************************ -->
+                            <form id="login" action="funciones.php" method="post">
                                 <div class="mb-3">
                                 <label for="usuario" class="form-label">Usuario</label>
                                     <input class="form-control" type="text" name="usuario" placeholder="Nombre de usuario" required>
@@ -86,7 +57,7 @@
                                     <label for="password" class="form-label">Contraseña</label>
                                     <input class="form-control" type="password" name="password" placeholder="Contraseña" required>
                                 </div>                                                
-                                <input class="btn btn-primary" type="submit" value="Entrar">
+                                <input class="btn btn-primary" type="submit" name="ingresar" value="Entrar">
                             </form>
                             <p>No tienes una cuenta? <a href="#" onclick="showRegisterForm()">Regístrate</a></p>
                         </div>
@@ -96,29 +67,33 @@
                             Registrarse
                         </div>
                         <div class="card-body">
-                            <form id="register" action="register.php" method="post">
-                                <!-- Campos de inicio de sesión -->
+    <!-- ***********************Formulario Registro de usuario tipo 1 (usuario 'cliente')********************* -->
+                            <form id="register" action="funciones.php" method="post">
                                 <div class="mb-3">
                                     <label for="new_username" class="form-label">Nombre de usuario</label>
                                     <input class="form-control" type="text" name="new_username" placeholder="Nuevo nombre de usuario" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="correo" class="form-label">Correo</label>
-                                    <input class="form-control" type="email" name="correo" placeholder="Correo electronico" required>
+                                    <input class="form-control" type="email" name="correo" placeholder="Correo electronico" required pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$">
                                 </div>
                                 <div class="mb-3">
                                     <label for="new_password" class="form-label">Contraseña</label>
                                     <input class="form-control" type="password" name="new_password" placeholder="Nueva contraseña" required>
-                                </div>                                                
-                                <input class="btn btn-primary" type="submit" value="Registrar">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="confirm_password" class="form-label">Confirmar Contraseña</label>
+                                    <input class="form-control" type="password" name="confirm_password" placeholder="Confirmar contraseña" required>
+                                </div>
+                                <input class="btn btn-primary" type="submit" value="Registrar" name="registrar">
                             </form>
                             <p>Ya tienes una cuenta? <a href="#" onclick="showLoginForm()">Iniciar Sesión</a></p>
                         </div>
                     </div>
                 </div>
-            </div>        
+            </div>
         </div>
-    </div>  
+    </div>
   </main>
   <footer>
     <!-- place footer here -->

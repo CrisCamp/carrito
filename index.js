@@ -1,7 +1,5 @@
 const btnCart = document.querySelector('.container-cart-icon');
-const containerCartProducts = document.querySelector(
-	'.container-cart-products'
-);
+const containerCartProducts = document.querySelector('.container-cart-products');
 
 btnCart.addEventListener('click', () => {
 	containerCartProducts.classList.toggle('hidden-cart');
@@ -21,6 +19,7 @@ const valorTotal = document.querySelector('.total-pagar');
 
 const countProducts = document.querySelector('#contador-productos');
 
+const btnPagar = document.querySelector('.btn-pagar');
 const cartEmpty = document.querySelector('.cart-empty');
 const cartTotal = document.querySelector('.cart-total');
 
@@ -71,22 +70,49 @@ rowProduct.addEventListener('click', e => {
 	}
 });
 
-// Funcion para mostrar  HTML
+btnPagar.addEventListener('click', () => {
+    // Verificar si hay productos en el carrito
+    if (allProducts.length > 0) {
+		let total = calcularTotal(allProducts);
+        // Crear la URL con los detalles del carrito como parámetros de consulta
+        const detallesURL = encodeURIComponent(JSON.stringify(allProducts));
+		const totalURL = encodeURIComponent(total);
+        // Redirigir al usuario a la página de pago con los detalles del carrito en la URL
+        // btnPagar.href = `acerca.php?carrito=${detallesURL}`;
+		btnPagar.href = `factura.php?carrito=${detallesURL}&total=${totalURL}`;
+    } else {
+        console.log('El carrito está vacío, no se puede realizar el pago');
+        // Puedes mostrar un mensaje al usuario indicando que el carrito está vacío
+        // y evitar que el enlace se active si lo deseas
+    }
+});
+
+// Función para calcular el total
+function calcularTotal(products) {
+    let total = 0;
+    products.forEach(product => {
+        total += parseInt(product.price.slice(1)) * product.quantity;
+    });
+    return total;
+}
+
+// Funcion para mostrar  HTML{}
 const showHTML = () => {
 	if (!allProducts.length) {
 		cartEmpty.classList.remove('hidden');
 		rowProduct.classList.add('hidden');
 		cartTotal.classList.add('hidden');
+		btnPagar.style.display = 'none';
 	} else {
 		cartEmpty.classList.add('hidden');
 		rowProduct.classList.remove('hidden');
 		cartTotal.classList.remove('hidden');
+		btnPagar.style.display = 'block';
 	}
-
 	// Limpiar HTML
 	rowProduct.innerHTML = '';
 
-	let total = 0;
+	let total = calcularTotal(allProducts);
 	let totalOfProducts = 0;
 
 	allProducts.forEach(product => {
@@ -116,9 +142,6 @@ const showHTML = () => {
         `;
 
 		rowProduct.append(containerProduct);
-
-		total =
-			total + parseInt(product.quantity * product.price.slice(1));
 		totalOfProducts = totalOfProducts + product.quantity;
 	});
 

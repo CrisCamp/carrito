@@ -14,7 +14,7 @@ body{
     color: #333;
 }
 
-.icon-cart{
+.icon-cart, .icon-check, .icon-about{
     width: 40px;
     height: 40px;
     stroke: #000;
@@ -50,7 +50,7 @@ nav ul li a {
     text-decoration: none;
     color: rgb(115, 143, 62);
     font-weight: bold;
-    font-size: 16px;
+    font-size: 20px;
     padding: 10px;
     border-radius: 5px;
 }
@@ -164,7 +164,24 @@ nav ul li a:hover {
     display: none;
 }
 
+.btn-pagar {
+    background-color: #4CAF50; /* Color de fondo */
+    border: none; /* Sin borde */
+    color: white; /* Color de texto */
+    padding: 15px 25px; /* Espaciado interno */
+    text-align: center; /* Alineación del texto */
+    text-decoration: none; /* Sin subrayado */
+    display: none; /* Mostrar como bloque */
+    font-size: 16px; /* Tamaño de fuente */
+    margin: 4px 2px; /* Márgenes */
+    cursor: pointer; /* Cursor al pasar el ratón */
+    border-radius: 8px; /* Borde redondeado */
+    transition-duration: 0.4s; /* Duración de la transición */
+}
 
+.btn-pagar:hover {
+    background-color: #45a049; /* Cambio de color al pasar el ratón */
+}
 
 
 /* Main */
@@ -225,7 +242,51 @@ nav ul li a:hover {
     text-align: center;
 }
 
-
 .hidden{
     display: none;
+}
+
+
+/****************************** PEDIDOS.PHP *************************/
+table{
+    font-family:  Verdana;
+    width: 80%;
+    text-align: center;
+    margin: 30px auto 100px auto;
+    border-collapse: collapse;
+}
+
+th{
+    font-size: 20px;
+    background-color:#69b5a8;
+    font-weight: bold;
+    border-style: solid; 
+    height: 70px;
+}
+
+td{
+    font-size: 15px;
+    height: 30px;
+    border-style: solid; 
+}
+
+
+/****************************** ACERCA.PHP **************************/
+.welcome {
+    text-align: center; /* Esto centrará horizontalmente todos los elementos hijos */
+}
+
+.welcome h1, .welcome p {
+    margin: 0; /* Elimina cualquier margen que tengan por defecto */
+}
+
+.welcome h1{
+    margin-top: 40px;
+    font-size: 45px;
+    color:#336199
+}
+
+.welcome p {
+    margin-top: 15px;
+    font-size: 25px;
 }

@@ -20,47 +20,20 @@
         $txtID = (isset($_POST['txtID']))?$_POST['txtID']:"";
         $nombre = (isset($_POST['nombre']))?$_POST['nombre']:"";        
         $precio = (isset($_POST['precio']))?$_POST['precio']:"";
+        $imagen = (isset($_POST['imagen']))?$_POST['imagen']:"";
     
         //la variable conexion se toma del documento bd.php
         $sentencia=$conexion->prepare("UPDATE tbl_productos SET
-        nombre = :nombre, precio = :precio WHERE ID =:id;");
+        nombre = :nombre, precio = :precio, imagen = :imagen WHERE ID =:id;");
         $sentencia->bindParam(":id",$txtID);
         //donde encuentres nombre pon la varible $nombre en la sentencia de arriba
         $sentencia->bindParam(":nombre",$nombre);
         //donde encuentres precio pon la varible $precio en la sentencia de arriba
         $sentencia->bindParam(":precio",$precio);
-    
+        //donde encuentres imagen pon la zzvarible $imagen en la sentencia de arriba
+        $sentencia->bindParam(":imagen",$imagen);
         $sentencia->execute();
-    
-        //Se debe verificar que el archivo de imagen se haya enviado
-        if($_FILES["imagen"]["name"] != ""){
-          //se obtienen los datos de la imagen
-          $imagen=(isset($_FILES["imagen"]["name"]))?$_FILES["imagen"]["name"]:"";
-          //en esta parte se esta validando que si existe una imagen le asignamos un nuevo nombre
-          $fecha_imagen=new DateTime();
-          $nombre_archivo_imagen = ($imagen!="")? $fecha_imagen->getTimestamp()."_".$imagen:"";
-          //se sube o se mueve la nueva imagen a la ruta de assets, tmp: nombre temporal 
-          $tmp_imagen=$_FILES["imagen"]["tmp_name"];
-          move_uploaded_file($tmp_imagen,"../../img/".$nombre_archivo_imagen);
-    
-          //se debe hacer una consulta a la bdd ya que esta contiene los nombres establecidos por el proceso de nombrado que se hizo en crear.php
-          $sentencia=$conexion->prepare("SELECT imagen FROM tbl_productos WHERE id=:id;");
-          //donde encuentres txtID pon la varible $txtID en la sentencia de arriba
-          $sentencia->bindParam(":id",$txtID);
-          $sentencia->execute();
-          $registro_imagen=$sentencia->fetch(PDO::FETCH_LAZY);
-          // para eliminar la imagen antigua
-          if(isset($registro_imagen["imagen"])){
-              if(file_exists("../../img/".$registro_imagen["imagen"]));
-              unlink("../../img/".$registro_imagen["imagen"]);
-          }
-    
-          //se hace la actualizacion de la imagen
-          $sentencia=$conexion->prepare("UPDATE tbl_productos SET imagen = :imagen WHERE ID =:id;");      
-          $sentencia->bindParam(":imagen",$nombre_archivo_imagen);
-          $sentencia->bindParam(":id",$txtID);
-          $sentencia->execute();
-        }
+
         $mensaje="Registro modificado con éxito.";
         header("Location:index.php?mensaje=".$mensaje);
     }    
@@ -95,7 +68,7 @@
             <div class="mb-3">
               <label for="imagen" class="form-label">Imagen:</label>
               <img width="100" src="../../img/<?php echo $imagen;?>"/>
-              <input type="file"
+              <input type="text"
                 class="form-control" name="imagen" id="imagen" aria-describedby="helpId" placeholder="Imagen">
             </div>
 

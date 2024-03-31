@@ -4,18 +4,7 @@ include("../../bd/bd.php");
 if($_POST){
     $nombre = (isset($_POST['nombre']))?$_POST['nombre']:"";
     $precio = (isset($_POST['precio']))?$_POST['precio']:"";
-    $imagen = (isset($_FILES["imagen"]["name"]))?$_FILES["imagen"]["name"]:"";
-
-    //en esta parte se esta validando que si existe una imagen le asignamos un nuevo nombre
-    $fecha_imagen = new DateTime();
-    $nombre_archivo_imagen = ($imagen!="")? $fecha_imagen->getTimestamp()."_".$imagen:"";
-    
-    //esta sentecia sirve para mover la imagen a otra carpeta
-    $tmp_imagen=$_FILES["imagen"]["tmp_name"];
-    if($tmp_imagen!=""){
-        //porfolio en lugar de portafolio
-        move_uploaded_file($tmp_imagen,"../../img/".$nombre_archivo_imagen);
-    }
+    $imagen = (isset($_POST['imagen']))?$_POST['imagen']:"";
 
     // Definir 
     $sentencia=$conexion->prepare("INSERT INTO tbl_productos 
@@ -26,8 +15,8 @@ if($_POST){
     $sentencia->bindParam(":nombre",$nombre);
     //donde encuentres precio pon la varible $precio en la sentencia de arriba
     $sentencia->bindParam(":precio",$precio);
-    //donde encuentres imagen pon la varible $nombre_archivo_imagen en la sentencia de arriba
-    $sentencia->bindParam(":imagen",$nombre_archivo_imagen);
+    //donde encuentres imagen pon la varible $imagen en la sentencia de arriba
+    $sentencia->bindParam(":imagen",$imagen);
 
     //Ejecutar
     $sentencia->execute();
@@ -57,7 +46,7 @@ include("../bootstrap.php"); ?>
 
             <div class="mb-3">
               <label for="imagen" class="form-label">Imagen:</label>
-              <input type="file"
+              <input type="text"
                 class="form-control" name="imagen" id="imagen" aria-describedby="helpId" placeholder="Imagen">
             </div>
 

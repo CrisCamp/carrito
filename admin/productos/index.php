@@ -3,21 +3,6 @@
     if (isset($_GET['txtID'])){
         // recepcionar el txtID que se obtiene de index.php en una variable con el mismo nombre
         $txtID = (isset($_GET['txtID']))?$_GET['txtID']:"";
-
-        // ademas de los datos insertados en la base de datos tambien debemos borrar las 
-        // imagenes creadas en el directorio, para ello se requiere de una consulta 
-        // unicamente al campo de la imagen
-        $sentencia=$conexion->prepare("SELECT imagen FROM tbl_productos WHERE id=:id;");
-        //donde encuentres txtID pon la varible $txtID en la sentencia de arriba
-        $sentencia->bindParam(":id",$txtID);
-        $sentencia->execute();
-        $registro_imagen=$sentencia->fetch(PDO::FETCH_LAZY);
-
-        // para eliminar la imagen
-        if(isset($registro_imagen["imagen"])){
-            if(file_exists("../../img/".$registro_imagen["imagen"]));
-            unlink("../../img/".$registro_imagen["imagen"]);
-        }
         // para eliminar los datos de la tabla segun su id
         $sentencia=$conexion->prepare("DELETE FROM tbl_productos WHERE id=:id;");
         //donde encuentres txtID pon la varible $txtID en la sentencia de arriba
@@ -69,7 +54,7 @@
                         <td><?php echo $registros["ID"]?></td>
                         <td><?php echo $registros["nombre"]?></td>
                         <td>$<?php echo $registros["precio"]?></td>
-                        <td><img width="100" src="../../img/<?php echo $registros["imagen"]?>"/></td>
+                        <td><img width="100" src="<?php echo $registros["imagen"]?>"/></td>
                         <td>
                         <a name="" id="" class="btn btn-info" href="editar.php?txtID=<?php echo $registros['ID']; ?>" role="button">Editar</a>
                             |
@@ -80,7 +65,6 @@
                 </tbody>                
             </table>
         </div>
-        
     </div>
     <div class="card-footer text-muted">
     </div>
